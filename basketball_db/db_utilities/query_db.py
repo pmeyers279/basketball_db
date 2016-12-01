@@ -1,7 +1,9 @@
 import pandas as pd
 from .utils import *
+from teams import *
 from datetime import datetime, timedelta
 import glob
+
 
 def query_db(team, date_start, date_end, basedir='./'):
     """
@@ -46,3 +48,36 @@ def query_db(team, date_start, date_end, basedir='./'):
         files.append(games[0])
         date_inc += timedelta(days=1)
     return files
+
+def get_schedule(TEAM, YEAR, basedir='./'):
+    """
+    Get schedule for a team for a given year
+
+    Parameters
+    ----------
+    TEAM : TODO
+    YEAR : TODO
+
+    Returns
+    -------
+    TODO
+
+    """
+    scheds = []
+    schedule_file = get_schedule_name(TEAM, int(YEAR), basedir)
+    scheds.append(pd.read_hdf(schedule_file,'schedule'))
+    schedule = pd.concat(scheds)
+    # remove headers
+    schedule = schedule[schedule.pts!='Tm']
+    opp_names = [convert_team(t) for t in schedule['opp_name']]
+    df = pd.DataFrame()
+    df['pts'] = pd.to_numeric(schedule['pts'])
+    df['opp_pts'] = pd.to_numeric(schedule['opp_pts'])
+    df['win'] = schedule['game_result']=='W'
+    df['location'] = schedule['game_location']=='H'
+    df['opp_name'] = opp_names
+    df['spread'] = df['pts'] - df['opp_pts']
+    dates = [datetime.strptime(schedule['date_game'][idx],'%a, %b %d, %Y') for idx in schedule.index]
+    df['date'] = dates
+    return df
+
