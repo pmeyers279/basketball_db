@@ -23,7 +23,7 @@ def convert_team(team_name):
     TEAMS = get_team_shortnames()
     LONG_TEAMS = get_team_longnames()
     if len(team_name)>3:
-	for ii in range(len(TEAMS)):
+	for ii in range(len(LONG_TEAMS)):
             if LONG_TEAMS[ii]==team_name:
 		return TEAMS[ii]
     if len(team_name)==3:
