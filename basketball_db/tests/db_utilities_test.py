@@ -1,8 +1,10 @@
 import unittest
 import numpy.testing as npt
-from ..db_utilities import save_team_season, query_db
+from ..db_utilities import save_team_season, query_db, get_schedule
+from datetime import datetime
 import os
 import shutil
+import pandas
 
 TEAM = 'MIN'
 YEAR = 2016
@@ -17,6 +19,11 @@ class TestCreate_db(unittest.TestCase):
         files = query_db(TEAM, date_start=DATE1, date_end=DATE2,
             basedir='TEST_DATA')
         self.assertTrue(files[0]==fname)
+    def test_get_schedule(self):
+        sched = get_schedule(TEAM, YEAR, basedir='TEST_DATA')
+        self.assertTrue(isinstance, pandas.DataFrame)
+        self.assertTrue(sched['date'][0]==datetime.strptime('Oct 28 2015',
+        '%b %d %Y'))
     def clean_up(self):
         shutil.rmtree('TEST_DATA')
         print 'Cleaned'
