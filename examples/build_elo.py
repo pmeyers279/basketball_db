@@ -23,7 +23,7 @@ for TEAM in TEAMS:
 
        try:
            schedule_dataframe = db_utilities.get_schedule(TEAM, YEAR, basedir=BASEDIR)
-           schedules[TEAM][YEAR] = schedule_dataframe 
+           schedules[TEAM][YEAR] = schedule_dataframe
        except:
            continue
 
