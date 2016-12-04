@@ -1,0 +1,7 @@
+python:
+    extra_requirements:
+            - sphinx_bootstrap_theme
+            - numpydoc
+            - sphinx
+            - sphinx_rtd_theme
+
