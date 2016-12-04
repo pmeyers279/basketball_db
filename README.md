@@ -9,7 +9,9 @@
 
 package to query basketball-reference.com and save data.
 
-**NOTE**: This package is still under very heavy development.
+**NOTE**: This package is still under very heavy development, and things are liable to change on a regular basis. At some point there might be a stable release, but for now we're just trying to get as much done as we can. 
+**NOTE**: We call this "basketball db" where "db" refers to "database"...we're not creating a relational database here (at least not right now). It's a well-organized directory structure and file-naming scheme. Which is sometimes just as good or better :).
+**NOTE**: We're not software developers we're physicists. Bear with us.
 
 ## Installation
 
@@ -19,7 +21,7 @@ package to query basketball-reference.com and save data.
 * `scipy`
 * `pandas`
 * `bs4`
-* `matplotlib` [will need soon]
+* `matplotlib`
 
 ### Instructions
 
@@ -30,13 +32,19 @@ package to query basketball-reference.com and save data.
 ## Save all games for one team for 2015/2016 season
 
 ```
->>> from basketball_db import create_db
->>> create_db.save_team_season('MIN',2016,basedir='./')
+>>> from basketball_db import db_utilities
+>>> db_utilities.save_team_season('MIN',2016,basedir='./')
 ```
 
 This saves games in
 
 `%(basedir)/%(year)/%(month)/%(day)/%(TEAM1)-AT-%(TEAM2).hdf5`
+
+and before th first game is downloaded, it actually saves the team's schedule from their basketball-reference schedule page in:
+
+`%(basedir)/SCHEDULES/%(TEAM)-%(YEAR)
+
+where %(YEAR) is the second year in whatever season you're looking at (i.e. Minnesota, 2015/2016 would be saved in "MIN-2016").
 
 Please run this before trying the examples. If you run this command in the examples folder it will give you the data necessary to run the example.
 ## Load data
@@ -51,12 +59,24 @@ You can read this in with:
 >>> print away_shot_chart
 ```
 
+Or, now you can do it with the under-development ShotChart class.
+
+```
+>>> from basketball_db.shotchart import ShotChart
+>>> fnames = db_utilities.query_db('MIN','20151028','20151029')
+>>> home_shot_chart, away_shot_chart = ShotChart.load_game(fnames[0])
+>>> plot = home_shot_chart.plot()
+>>> plot.show()
+```
+
 ## Examples
 
 `python save_team.py --team MIN --YMDStart 20151101 --YMDEnd 20151201 --inifile bball.ini`
 
 ## Run tests
 
+Until I get a chance to create some good documentation, the unittests are a solid place to look for how to run the code. They're in `basketball_db/tests/`.
+
 1. cd to repo top level
-2. For example: `python -m basketball_db.tests.create_db_test`
+2. run `python setup.py test`
 
