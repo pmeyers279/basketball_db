@@ -75,6 +75,8 @@ Or, now you can do it with the under-development ShotChart class.
 
 ## Run tests
 
+Until I get a chance to create some good documentation, the unittests are a solid place to look for how to run the code. They're in `basketball_db/tests/`.
+
 1. cd to repo top level
 2. run `python setup.py test`
 
